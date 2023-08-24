@@ -1,16 +1,23 @@
 const hre = require("hardhat");
+const contractArtifact = require("../artifacts/contracts/buykahawa.sol/kahawa.json");
 
 async function main() {
-  const kahawa = await hre.ethers.deployContract("kahawa"); //fetching bytecode and ABI
+  const Kahawa = await hre.ethers.getContractFactory(
+    "kahawa",
+    contractArtifact.abi
+  );
+  const kahawa = await Kahawa.deploy(); // Deploying the contract
 
-  await kahawa.waitForDeployment(); // instance and deploy
+  await kahawa.waitForDeployment(); // Waiting for deployment to complete
 
-  console.log("ETH  deployed to", `${kahawa.address}`);
+  console.log("Deployed contract address:", kahawa.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
