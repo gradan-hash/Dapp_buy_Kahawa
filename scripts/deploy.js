@@ -5,7 +5,7 @@ async function main() {
 
   await kahawa.waitForDeployment();
 
-  console.log(`ETH and unlock timestamp ${kahawa.target}`);
+  console.log(`ETH address = : ${kahawa.target}`);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
