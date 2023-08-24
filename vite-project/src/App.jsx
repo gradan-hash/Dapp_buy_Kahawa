@@ -8,21 +8,34 @@ function App() {
     signer: null,
     contract: null,
   });
+  const [account, setAccount] = useState("Not connectd");
 
   useEffect(() => {
     const initialize = async () => {
+      const contractaddress = "0xYourContractAddress";
+      const contractABI = "yourContractABI";
+
       // Check if Ethereum (Metamask) is available
       if (typeof window.ethereum !== "undefined") {
         const { ethereum } = window;
 
         // Request user accounts from Metamask
         try {
-          const accounts = await ethereum.request({
+          const account = await ethereum.request({
             method: "eth_requestAccounts",
           });
-
-          const provider = new ethers.provider.Web3Provider(ethereum);
           
+          setAccount(account);
+
+          const provider = new ethers.provider.Web3Provider(ethereum); //read blockchin
+
+          const signer = provider.getSigner(); //write blockchain...
+          const contract = new ethers.Contract(
+            contractaddress,
+            contractABI,
+            signer
+          );
+          setState({ provider, signer, contract });
         } catch (error) {
           console.error("Error fetching accounts:", error);
         }
@@ -30,10 +43,6 @@ function App() {
         console.error("Metamask not available.");
       }
     };
-
-    // Replace with the actual contract address and ABI
-    const contractaddress = "0xYourContractAddress";
-    const contractABI = "yourContractABI"; // Make sure to replace this with your actual ABI
 
     initialize();
   }, []);
