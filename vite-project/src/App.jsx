@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import { ethers } from "ethers";
 import abi from "./kahawa.json";
+import { Web3Provider } from "@ethersproject/providers";
 
 function App() {
   const [state, setState] = useState({
@@ -28,7 +29,9 @@ function App() {
 
           setAccount(account);
 
-          const provider = new ethers.provider.Web3Provider(ethereum); //read blockchin
+          // const provider = new ethers.provider.Web3Provider(ethereum); //read blockchin
+
+          const provider = new Web3Provider(ethereum);
 
           const signer = provider.getSigner(); //write blockchain...
           const contract = new ethers.Contract(
@@ -36,6 +39,7 @@ function App() {
             contractABI,
             signer
           );
+          console.log(contract);
           setState({ provider, signer, contract });
         } catch (error) {
           console.error("Error fetching accounts:", error);
