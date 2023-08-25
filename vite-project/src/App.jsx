@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-import { ethers } from "hardhat";
+import { ethers } from "ethers";
+import abi from "./kahawa.json";
 
 function App() {
   const [state, setState] = useState({
@@ -8,12 +9,12 @@ function App() {
     signer: null,
     contract: null,
   });
-  const [account, setAccount] = useState("Not connectd");
+  const [account, setAccount] = useState("Not connected");
 
   useEffect(() => {
     const initialize = async () => {
-      const contractaddress = "0xYourContractAddress";
-      const contractABI = "yourContractABI";
+      const contractaddress = "0xa64e3144835aF8781c750ceC432784a68d883266";
+      const contractABI = abi.abi;
 
       // Check if Ethereum (Metamask) is available
       if (typeof window.ethereum !== "undefined") {
@@ -24,7 +25,7 @@ function App() {
           const account = await ethereum.request({
             method: "eth_requestAccounts",
           });
-          
+
           setAccount(account);
 
           const provider = new ethers.provider.Web3Provider(ethereum); //read blockchin
@@ -49,7 +50,7 @@ function App() {
 
   return (
     <div>
-      <h1>Hello React</h1>
+      <h1>Hello Web3</h1>
     </div>
   );
 }

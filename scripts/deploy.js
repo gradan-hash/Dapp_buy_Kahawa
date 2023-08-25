@@ -1,16 +1,22 @@
 const hre = require("hardhat");
 
 async function main() {
-  const kahawa = await hre.ethers.deployContract("kahawa");
+  const gasPrice = hre.ethers.parseUnits("3000000", "gwei"); // Adjust the gas price here
+  const gasLimit = 3000000; // Increase the gas limit here
 
-  await kahawa.waitForDeployment();
+  const KahawaContract = await hre.ethers.getContractFactory("kahawa"); // Replace "Kahawa" with your actual contract's name
+  const kahawa = await KahawaContract.deploy();
 
-  console.log(`ETH address = : ${kahawa.target}`);
+  await kahawa.deployed();
+
+  console.log(`Contract deployed to address: ${kahawa.address}`);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
